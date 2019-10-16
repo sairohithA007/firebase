@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -13,6 +14,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.starter.code.firebasedemo1.push.notifications.FCMService;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -34,6 +38,8 @@ public class RegistrationActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
 
+        // Getting FCM device token
+        getFcmDeviceToken();
     }
 
     //******* Method to register user *******//
@@ -68,5 +74,26 @@ public class RegistrationActivity extends AppCompatActivity {
     public void goToLogin(View view){
         Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
         startActivity(intent);
+    }
+
+
+    // Getting FCM device token
+    public void getFcmDeviceToken() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("Registration: ", "Failed to instantiate firebase ", task.getException());
+                            return;
+                        }
+
+                        String token = task.getResult().getToken();
+                        Toast.makeText(RegistrationActivity.this, token, Toast.LENGTH_SHORT).show();
+                        getSharedPreferences("_", MODE_PRIVATE).edit().putString("fcm_token", token).apply();
+                        System.out.println("FCM Device token: " + FCMService.getToken(getApplicationContext()));
+                    }
+                });
+
     }
 }
