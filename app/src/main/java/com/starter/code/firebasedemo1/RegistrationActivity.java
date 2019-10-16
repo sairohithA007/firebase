@@ -13,6 +13,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.starter.code.firebasedemo1.model.User;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -39,7 +45,7 @@ public class RegistrationActivity extends AppCompatActivity {
     //******* Method to register user *******//
     public void registerUser(View view) {
         // Feting the text from UI
-        String emailContent, passwordContent;
+        final String emailContent, passwordContent;
         emailContent = email.getText().toString();
         passwordContent = password.getText().toString();
 
@@ -51,10 +57,21 @@ public class RegistrationActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // If successfully created the user this block will execute
                             Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_LONG).show();
+                            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().getDatabase().getReference("users");
+
+                            User user = new User();
+                            user.setEmail(emailContent);
+                            user.setPassword(passwordContent);
+
+                            Map<String, Object> userDocument = new HashMap<>();
+                            userDocument.put(task.getResult().getUser().getUid(), user);
+
+                            mDatabase.updateChildren(userDocument);
 
                             // Once registered, navigate to login screen
                             Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
                             startActivity(intent);
+
                         }
                         else {
                             // If any error while creating the user this block will execute

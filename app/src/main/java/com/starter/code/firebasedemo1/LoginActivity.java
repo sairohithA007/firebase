@@ -11,8 +11,15 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.starter.code.firebasedemo1.model.User;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -33,6 +40,8 @@ public class LoginActivity extends AppCompatActivity {
         // Identifying UI Components
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
+        email.setText("achantasairohith@gmail.com");
+        password.setText("achantasai");
 
     }
 
@@ -40,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     public void loginUser(View view){
 
         // Fetching the data from UI
-        String emailContent, passwordContent;
+        final String emailContent, passwordContent;
         emailContent = email.getText().toString();
         passwordContent = password.getText().toString();
 
@@ -63,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+
     }
 
 }
