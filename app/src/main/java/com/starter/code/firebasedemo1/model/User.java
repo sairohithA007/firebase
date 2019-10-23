@@ -2,8 +2,8 @@ package com.starter.code.firebasedemo1.model;
 
 public class User {
 
+    private String uUid;
     private String email;
-    private String password;
     private String phone;
     private String address;
 
@@ -31,11 +31,11 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getuUid() {
+        return uUid;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setuUid(String uUid) {
+        this.uUid = uUid;
     }
 }

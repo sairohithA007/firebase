@@ -40,8 +40,6 @@ public class LoginActivity extends AppCompatActivity {
         // Identifying UI Components
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
-        email.setText("achantasairohith@gmail.com");
-        password.setText("achantasai");
 
     }
 

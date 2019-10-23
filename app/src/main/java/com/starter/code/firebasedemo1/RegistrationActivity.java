@@ -57,16 +57,18 @@ public class RegistrationActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // If successfully created the user this block will execute
                             Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_LONG).show();
-                            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().getDatabase().getReference("users");
+
+                            //*********************** Start: Storing data on firebase database  ***********************//
+                            DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
 
                             User user = new User();
                             user.setEmail(emailContent);
-                            user.setPassword(passwordContent);
 
                             Map<String, Object> userDocument = new HashMap<>();
                             userDocument.put(task.getResult().getUser().getUid(), user);
 
-                            mDatabase.updateChildren(userDocument);
+                            database.updateChildren(userDocument);
+                            //*********************** end: Storing data on firebase database  ***********************//
 
                             // Once registered, navigate to login screen
                             Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
